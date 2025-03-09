@@ -1,18 +1,14 @@
 import express from "express";
+import { createSubscription, getSubscriptions, subscription, updateSubscription} from "../controllers/subscription.controller.js";
+
+import { verifyToken } from "../middlewares/verifyToken.js";
 const router = express.Router();
 
-router.get("/", (req, res)=>{
-    res.send("Get all subscriptions")
-})
-router.get("/:id", (req, res)=>{
-    res.send("Get a subscriptions")
-})
-router.post("/", (req, res)=>{
-    res.send("create a subscriptions")
-})
-router.put("/:id", (req, res)=>{
-    res.send("update a  subscriptions")
-})
+router.get("/", verifyToken, getSubscriptions)
+router.get("/:id", verifyToken, subscription);
+
+router.post("/", verifyToken, createSubscription)
+router.put("/:id", verifyToken, updateSubscription)
 router.delete("/:id", (req, res)=>{
     res.send("delete a subscriptions")
 })

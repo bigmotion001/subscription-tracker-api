@@ -12,8 +12,10 @@
   "license": "ISC",
   "dependencies": {
     "@arcjet/node": "^1.0.0-beta.3",
+    "@upstash/workflow": "^0.2.12",
     "bcryptjs": "^3.0.2",
     "cookie-parser": "^1.4.7",
+    "dayjs": "^1.11.13",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "jsonwebtoken": "^9.0.2",

@@ -8,6 +8,7 @@ import cookieParser from "cookie-parser";
 import connectDB from "./db/db.js";
 import errorMiddleware from "./middlewares/error.middleware.js";
 import arcjetMiddleware from "./middlewares/arcjet.middleware.js";
+import workflowrouter from "./routes/workflow.route.js";
 
 const PORT = process.env.PORT;
 
@@ -27,6 +28,7 @@ app.get("/", (req, res)=>{
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/user", userRouter);
 app.use("/api/v1/subscriptions", subscriptionRouter);
+app.use("/api/v1/workflow", workflowrouter);
 
 app.use(errorMiddleware);
 

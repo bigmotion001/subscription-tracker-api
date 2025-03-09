@@ -23,8 +23,8 @@ const subscriptionSchema = new mongoose.Schema(
 
     frequency: {
       type: String,
-      enum: ["Daily", "Weekly", "Monthly", "Yearly"],
-      default: "Monthly",
+      enum: ["daily", "weekly", "monthly", "yearly"],
+      default: "monthly",
     },
 
     category:{
@@ -48,23 +48,17 @@ const subscriptionSchema = new mongoose.Schema(
 
     startDate: {
       type: Date,
-      required: [true, "Please provide a start date for this subscription"],
-      validate: {
-        validator: (value) => {
-          const dateNow = new Date();
-          return value < dateNow;
-        },
-        message: "Start date cannot be before today",
-      },
+     
+      default:new Date()
     },
 
     renewalDate:{
         type: Date,
-        required: [true, "Please provide a renewal date for this subscription"],
+      
         validate: {
-          validator: function (value){
-            
+          validator: function (value) {
             return value > this.startDate;
+    
           },
           message: "Renewal date must be after start date",
         },
@@ -82,23 +76,25 @@ const subscriptionSchema = new mongoose.Schema(
 );
 
 // Auto-calculate renewal date if missing.
+
+// Auto-calculate renewal date if missing.
 subscriptionSchema.pre('save', function (next) {
-    if(!this.renewalDate) {
-      const renewalPeriods = {
-        daily: 1,
-        weekly: 7,
-        monthly: 30,
-        yearly: 365,
-      };
-  
-      this.renewalDate = new Date(this.startDate);
-      this.renewalDate.setDate(this.renewalDate.getDate() + renewalPeriods[this.frequency]);
-    }
-  
-    // Auto-update the status if renewal date has passed
-    if (this.renewalDate < new Date()) {
-      this.status = 'expired';
-    }
+  if(!this.renewalDate) {
+    const renewalPeriods = {
+      daily: 1,
+      weekly: 7,
+      monthly: 30,
+      yearly: 365,
+    };
+
+    this.renewalDate = new Date(this.startDate);
+    this.renewalDate.setDate(this.renewalDate.getDate() + renewalPeriods[this.frequency]);
+  }
+
+  // Auto-update the status if renewal date has passed
+  if (this.renewalDate < new Date()) {
+    this.status = 'expired';
+  }
   
     next();
   });
